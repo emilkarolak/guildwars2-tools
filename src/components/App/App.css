@@ -1,0 +1,21 @@
+body {
+  color: white;
+  background-color: #000;
+}
+
+section.page-content {
+  margin-top: 60px;
+  position: relative;
+  padding: 1em;
+}
+
+section.page-content {
+  padding: 1em;
+}
+
+h1 {
+  font-size: 25px;
+  text-align: center;
+  font-weight: bold;
+  margin: 1em auto;
+}

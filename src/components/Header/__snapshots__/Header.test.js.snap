@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<nav
+  className="navbar navbar-expand-md navbar-dark fixed-top bg-dark"
+>
+  <a
+    className="navbar-brand"
+    href="/"
+  >
+    Guild Wars 2 - Tools
+  </a>
+  <button
+    aria-controls="navbarCollapse"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    className="navbar-toggler"
+    data-target="#navbarCollapse"
+    data-toggle="collapse"
+    type="button"
+  >
+    <span
+      className="navbar-toggler-icon"
+    />
+  </button>
+  <div
+    className="collapse navbar-collapse"
+    id="navbarCollapse"
+  >
+    <ul
+      className="navbar-nav mr-auto"
+    >
+      <li
+        className="nav-item"
+      >
+        <a
+          aria-current="page"
+          className="nav-link active"
+          href="/"
+          onClick={[Function]}
+          style={Object {}}
+        >
+          Map
+        </a>
+      </li>
+      <li
+        className="nav-item"
+      >
+        <a
+          aria-current={null}
+          className="nav-link"
+          href="/account"
+          onClick={[Function]}
+        >
+          Account
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+`;

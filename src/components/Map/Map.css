@@ -1,0 +1,37 @@
+#map {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #000;
+  font-family: 'Menomonia';
+}
+
+.map-info-control-item {
+  background-color: #fff;
+  height: 26px;
+  line-height: 26px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  margin-right: 10px;
+  float: left;
+  padding: 0 10px;
+}
+
+.map-name {
+  color: #F7E567 !important;
+  display: none;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-family: 'Menomonia' !important;
+  font-size: 2em;
+  text-shadow: 0 0 6px #000;
+}
+
+#map[map-zoom="4"] .map-name, #map[map-zoom="5"] .map-name, #map[map-zoom="6"] .map-name, #map[map-zoom="7"] .map-name {
+  display: block;
+}

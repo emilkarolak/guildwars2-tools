@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<section
+  className="page-content"
+>
+  <h1>
+    Error 404
+  </h1>
+  <h2>
+    Page not found.
+  </h2>
+  <p>
+    <a
+      aria-current="page"
+      className="nav-link active"
+      href="/"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      Go back to start
+    </a>
+  </p>
+</section>
+`;
