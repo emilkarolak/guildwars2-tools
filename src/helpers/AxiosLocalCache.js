@@ -4,13 +4,11 @@ import LocalCache from './LocalCache';
 export function AxiosLocalCache(getUrl=false, ttl=0, callback=false) {
   if(getUrl) {
     let cache = null;
-    try {
-      LocalCache.get(getUrl).then(response => {
-        cache = response;
-        if(cache) if(cache.ttl) if(new Date(cache.ttl) < new Date()) cache = null;
-        if(cache && callback) callback(cache);
-      });
-    } catch(error) {}
+    LocalCache.get(getUrl).then(response => {
+      cache = response;
+      if(cache) if(cache.ttl) if(new Date(cache.ttl) < new Date()) cache = null;
+      if(cache && callback) callback(cache);
+    }).catch(error => console.log(error))
     if(!cache) {
       axios({
         method: "GET",
@@ -25,9 +23,7 @@ export function AxiosLocalCache(getUrl=false, ttl=0, callback=false) {
           } else {
             response.data.ttl = false;
           }
-          try {
-            LocalCache.set(getUrl, response.data);
-          } catch(error) {}
+          LocalCache.set(getUrl, response.data).catch(error => console.log(error))
           if(callback) callback(response.data);
         }
       });

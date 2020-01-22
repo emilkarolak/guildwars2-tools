@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import './App.scss';
 import Header from '../Header';
 import Map from '../Map';
 import Account from '../Account';

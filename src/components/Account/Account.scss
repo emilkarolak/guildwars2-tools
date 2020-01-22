@@ -9,3 +9,10 @@ $input-bg-color: #ced4da;
         background-color: $input-bg-color;
     }
 }
+
+h3 {
+    margin: 1em 0;
+    button {
+        vertical-align: top !important;
+    }
+}

@@ -44,7 +44,7 @@ class Map extends Component {
     this.loadMapState = this.loadMapState.bind(this);
   }
   unprojectCoords(coords) {
-    if(coords) return this.map.unproject(coords, 7); else return null;
+    if(coords) return this.map.unproject(coords, 7); else return this.map.unproject([0,0], 7);
   }
   projectCoords(coords) {
     return this.map.project(coords, 7);
@@ -68,27 +68,27 @@ class Map extends Component {
                 defaultIconSize = [16, 16];
                 switch(poi.type) {
                   case "waypoint":
-                    iconUrl = 'https://render.guildwars2.com/file/32633AF8ADEA696A1EF56D3AE32D617B10D3AC57/157353.png';
+                    iconUrl = './icons/waypoint.png';
                     defaultIconSize = [20, 20];
                     if(!poi.name.length) poi.name = 'Waypoint';
                   break;
                   case "vista":
-                    iconUrl = 'https://render.guildwars2.com/file/A2C16AF497BA3A0903A0499FFBAF531477566F10/358415.png';
+                    iconUrl = './icons/vista.png';
                     if(!poi.name.length) poi.name = 'Vista';
                   break;
                   case "landmark":
-                    iconUrl = 'https://render.guildwars2.com/file/25B230711176AB5728E86F5FC5F0BFAE48B32F6E/97461.png';
+                    iconUrl = './icons/poi.png';
                     if(!poi.name.length) poi.name = 'Point of Interest';
                   break;
                   case "unlock":
-                    iconUrl = 'https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png';
+                    iconUrl = './icons/dungeon.png';
                     if(!poi.name.length) {
                       poi.name = 'Dungeon / Raid / Mount unlock';
                     } else {
                       if(poi.name.includes("Raid")) {
-                        iconUrl = 'https://render.guildwars2.com/file/5866630DA52DCB5C423FB81ECF69FD071611E36B/1128644.png';
+                        iconUrl = './icons/raid.png';
                       } else if(poi.name.includes("Fractals")) {
-                        iconUrl = 'https://render.guildwars2.com/file/80F608A1E8112313595813033BDEAD3C05A43D01/514379.png';
+                        iconUrl = './icons/fractals.png';
                       }
                     }
                   break;
@@ -132,13 +132,13 @@ class Map extends Component {
             for(poi in gameMap.tasks) {
               if(gameMap.tasks.hasOwnProperty(poi)) {
                 poi = gameMap.tasks[poi];
-                if(!poi.objective.length) poi.name = 'Waypoint';
+                if(!poi.objective.length) poi.objective = 'Task / heart';
                 L.marker(this.unprojectCoords(poi.coord), {
                   title: poi.objective+' (Level '+poi.level+')',
                   riseOnHover: true,
                   riseOffset: 2500,
                   icon: L.icon({
-                    iconUrl: 'https://render.guildwars2.com/file/B3DEEC72BBEF0C6FC6FEF835A0E275FCB1151BB7/102439.png',
+                    iconUrl: './icons/task.png',
                     iconRetinaUrl: null,
                     shadowUrl: null,
                     shadowRetinaUrl: null,
@@ -157,7 +157,7 @@ class Map extends Component {
                   riseOnHover: true,
                   riseOffset: 2500,
                   icon: L.icon({
-                    iconUrl: 'https://render.guildwars2.com/file/B4EC6BB3FDBC42557C3CAE0CAA9E57EBF9E462E3/156626.png',
+                    iconUrl: './icons/hp.png',
                     iconRetinaUrl: null,
                     shadowUrl: null,
                     shadowRetinaUrl: null,
@@ -176,7 +176,7 @@ class Map extends Component {
                   riseOnHover: true,
                   riseOffset: 2500,
                   icon: L.icon({
-                    iconUrl: 'https://render.guildwars2.com/file/94ED0C4A49295657095EF5D09CC8C4E6709E6FCA/961368.png',
+                    iconUrl: './icons/adventure.png',
                     iconRetinaUrl: null,
                     shadowUrl: null,
                     shadowRetinaUrl: null,
@@ -187,9 +187,13 @@ class Map extends Component {
                 items_found++;
               }
             }
-            if(items_found && gameMap.points_of_interest.length) {
-              L.rectangle(new L.LatLngBounds(this.unprojectCoords(gameMap.continent_rect[0]), this.unprojectCoords(gameMap.continent_rect[1])), {color: "#ff7800", weight: 2, fill: false}).addTo(this.overlays.maps);
-              L.marker(this.unprojectCoords(gameMap.label_coord), {opacity: 0, riseOnHover: true, riseOffset: 2500}).bindTooltip(gameMap.name, {permanent: true, direction: 'center', className: "map-name", offset: [0, 0]}).addTo(this.overlays.maps);
+            if(items_found && gameMap.points_of_interest.length && gameMap.continent_rect) {
+              if(gameMap.continent_rect.length) {
+                try {
+                  L.rectangle(new L.LatLngBounds(this.unprojectCoords(gameMap.continent_rect[0]), this.unprojectCoords(gameMap.continent_rect[1])), {color: "#ff7800", weight: 2, fill: false}).addTo(this.overlays.maps);
+                  L.marker(this.unprojectCoords(gameMap.label_coord), {opacity: 0, riseOnHover: true, riseOffset: 2500}).bindTooltip(gameMap.name, {permanent: true, direction: 'center', className: "map-name", offset: [0, 0]}).addTo(this.overlays.maps);
+                } catch(error) {}
+              }
             }
           }
         }
@@ -224,17 +228,12 @@ class Map extends Component {
         }
       }
     }
-    try {
-      LocalCache.set('mapState', this.mapState);
-    } catch(error) {}
+    LocalCache.set('mapState', this.mapState).catch(error => console.log(error))
     this.updateMapInfo();
   }
   loadMapState() {
     return new Promise((resolve, reject) => {
-      try {
-        LocalCache.get('mapState').then(mapStateTemp => resolve(mapStateTemp));
-      } catch(error) {}
-      reject(null);
+      LocalCache.get('mapState').then(mapStateTemp => resolve(mapStateTemp)).catch(error => { console.log(error); reject(null); })
     });
   }
   componentDidMount() {
@@ -258,8 +257,6 @@ class Map extends Component {
     }).finally(() => {
       try {
         this.map = L.map("map", {
-          renderer: L.canvas(),
-          preferCanvas: true,
           crs: L.CRS.Simple,
           zoomAnimation: false,
           fadeAnimation: false,

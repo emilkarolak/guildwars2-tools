@@ -1,11 +1,13 @@
 export default class LocalCache {
   static set = (itemName='', data=null) => {
-    try {
-      window.localStorage.setItem(itemName, JSON.stringify(data));
-      return true;
-    } catch(error) {
-      throw error;
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        window.localStorage.setItem(itemName, JSON.stringify(data));
+        resolve(true);
+      } catch(error) {
+        reject(error);
+      }
+    })
   }
   static get = (itemName='') => {
     return new Promise((resolve, reject) => {
